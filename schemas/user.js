@@ -4,7 +4,7 @@ const Post = require('./post')
 
 const UserSchema = new mongoose.Schema({
     user_id: { type: String, required: true },
-    userName: { type: String, required: true },
+    channelName: { type: String, required: true },
     password: { type: String, required: true },
     posts: {
         type: mongoose.Schema.Types.ObjectId,
