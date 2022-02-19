@@ -18,7 +18,9 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
     },
-})
+},
+    { timestamps: true }
+)
 
 UserSchema.virtual('userId').get(function () {
     return this._id.toHexString()
