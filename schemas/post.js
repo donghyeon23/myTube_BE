@@ -4,7 +4,7 @@ const User = require('./user')
 
 const postsSchema = new mongoose.Schema(
     {
-        userName: {
+        channelName: {
             type: String,
             required: true,
         },
@@ -48,9 +48,9 @@ postsSchema.set('toObject', { virtuals: true })
 // postsSchema.post('save',
 //   async function (next) {
 //     // post id
-//     const { userName, _id } = this.getFilter();
+//     const { channelName, _id } = this.getFilter();
 //     // 관련 댓글 삭제
-//     await User.mupdate({ _id : userName }, {$push: {posts: _id} });
+//     await User.mupdate({ _id : channelName }, {$push: {posts: _id} });
 
 //     next();
 // });
