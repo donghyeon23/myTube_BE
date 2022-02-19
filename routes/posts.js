@@ -5,6 +5,7 @@ const router = express.Router();
 const Post = require('../schemas/post');
 const Comment = require('../schemas/comment');
 const User = require('../schemas/user');
+const Like = require('../schemas/like');
 
 // MiddleWares
 const authMiddleware = require('../middlewares/auth-middleware');
@@ -44,9 +45,12 @@ router.get('/posts/:postId', async (req, res) => {
         const post = await Post.findById(postId)
         const postCommentsSelector = { channelName: 1, comment: 1, createdAt: 1, commentId: 1 }
         const postComments = await Post.findById(postId).populate('comments', postCommentsSelector)
-        const postCount = await Post.findById(postId).populate('commentsCount')
+        const postCommentsCount = await Post.findById(postId).populate('commentsCount')
         console.log(postComments)
-        console.log(postCount)
+        console.log(postCommentsCount)
+        // const postLikesSelector = { channelName: 1 }
+        // const postLikes = await Post.findById(postId).populate('likes', postLikesSelector)
+        // const postLikesCount = await Post.findById(postId).populate('likesCount')
         post.views++;
         await post.save();
         res.send({ result: 'success', post });
@@ -93,6 +97,8 @@ router.delete('/posts/:postId', authMiddleware, async (req, res) => {
             } else {
                 await deleteS3(existPost);
                 await Post.deleteOne({ _id: postId });
+                await Comment.deleteMany({ postId });
+                await Like.deleteMany({ postId });
             }
         }
         res.send({ result: 'success', msg: '삭제되었습니다.' });
