@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     }
 
     try {
-        const { user_id } = jwt.verify(tokenValue, 'my-secret-key')
+        const { user_id } = jwt.verify(tokenValue, JWT_SECRET_KEY)
 
         User.findOne({ user_id }).then((user) => {
             res.locals.user = user

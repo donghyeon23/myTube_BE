@@ -16,15 +16,15 @@ const deleteS3 = require('../middlewares/deleteS3');
 // 전체 게시글 조회 API 통과
 router.get('/posts', async (req, res) => {
     const existPosts = await Post.find({});
-    const posts = existPosts.sort((a, b) => b.date - a.date);
-    res.json({ result: 'success', posts });
+    const posts = existPosts.sort((a, b) => b.createdAt - a.createdAt);
+    res.send({ result: 'success', posts });
 });
 
 // 특정 게시글 조회 API 통과
 router.get('/posts/:postId', async (req, res) => {
     const { postId } = req.params;
     const post = await Post.findOne({ _id: postId });
-    res.json({ result: 'success', post: [post] });
+    res.send({ result: 'success', post: [post] });
 });
 
 //게시글 전체 삭제 기능 구현 완료 통과
@@ -42,7 +42,7 @@ router.delete('/posts/:postId', authMiddleware, async (req, res) => {
             await post.deleteOne({ _id: postId });
         }
     }
-    res.json({ result: 'success', msg: '삭제되었습니다.' });
+    res.send({ result: 'success', msg: '삭제되었습니다.' });
 });
 
 // 게시글 작성
@@ -58,10 +58,10 @@ router.post('/posts', authMiddleware, async (req, res) => {
             year: Number(year),
             image,
         });
-        res.json({ result: 'success', msg: '작성 완료 되었습니다.' });
+        res.send({ result: 'success', msg: '작성 완료 되었습니다.' });
     } catch (err) {
         console.log(err);
-        res.status(400).json({ result: 'fail', msg: err });
+        res.status(400).send({ result: 'fail', msg: err });
     }
 });
 
@@ -81,7 +81,7 @@ router.post(
             // 	year: Number(year),
             // 	image,
             // });
-            res.json({ result: 'success', image });
+            res.send({ result: 'success', image });
         } catch (err) {
             res.status(400).json({ result: 'fail', msg: err });
         }
@@ -119,7 +119,7 @@ router.post('/posts/:postId', authMiddleware, async (req, res) => {
             console.log('게시글 수정 완료!');
         }
     }
-    res.json({ result: 'success', msg: '수정되었습니다.' });
+    res.send({ result: 'success', msg: '수정되었습니다.' });
 });
 
 router.post('/posts', async (req, res) => {
@@ -142,10 +142,10 @@ router.post('/posts', async (req, res) => {
         await createdPost.save();
         // await User.findOneAndUpdate({ user_id: channelName.user_id }, { posts : createdPost.postId })
 
-        res.json({ result: 'success', msg: '작성 완료 되었습니다.' });
+        res.send({ result: 'success', msg: '작성 완료 되었습니다.' });
     } catch (err) {
         console.log(err);
-        res.status(400).json({ result: 'fail', msg: err });
+        res.status(400).send({ result: 'fail', msg: err });
     }
 });
 
@@ -164,7 +164,7 @@ router.get('/', async (req, res) => {
         //전체 게시글 조회
         if (!category || category === null || category === undefined) {
             const posts = await Post.find().sort('-createdAt');
-            return res.json({ result: 'success', posts });
+            return res.send({ result: 'success', posts });
         }
 
         //특정 카테고리 게시글 조회
@@ -174,7 +174,7 @@ router.get('/', async (req, res) => {
                 errorMessage: '해당하는 동영상이 없습니다.',
             });
         }
-        res.json(selectedCategory);
+        res.send(selectedCategory);
     } catch (error) {
         console.error(error);
     }
