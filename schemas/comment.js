@@ -4,17 +4,15 @@ const User = require('./user')
 
 const CommentSchema = new mongoose.Schema(
     {
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        },
+        channelName: { type: String, required: true },
         postId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
         },
         comment: { type: String, required: true },
     },
-    { timestamps: true }
+    { timestamps: true },
+    { versionKey: false },
 )
 
 CommentSchema.set('toJSON', {
