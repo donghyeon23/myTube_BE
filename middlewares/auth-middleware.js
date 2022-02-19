@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const {User} = require("../schemas/user");
+const { User } = require('../schemas/user')
 
 module.exports = (req, res, next) => {
     const { authorization } = req.headers
@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 
     if (tokenType !== 'Bearer') {
         res.status(401).send({
-            errorMessage: '로그인 후 사용하세요.'
+            errorMessage: '로그인 후 사용하세요.',
         })
         return
     }
@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
         })
     } catch (err) {
         res.status(401).send({
-            errorMessage: '로그인 후 사용하세요.'
+            errorMessage: '로그인 후 사용하세요.',
         })
     }
 }
