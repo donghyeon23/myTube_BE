@@ -39,15 +39,32 @@ const postsSchema = new mongoose.Schema(
             },
         ],
     },
-    { timestamps: true }
+    { timestamps: true },
+    { versionKey: false },
 )
 
 postsSchema.virtual('postId').get(function () {
     return this._id.toHexString()
 })
 
+postsSchema.virtual('comments', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'postId',
+})
+
+postsSchema.virtual('commentsCount', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'postId',
+    count: true,
+})
+
+
 postsSchema.set('toJSON', { virtuals: true })
 postsSchema.set('toObject', { virtuals: true })
+
+
 
 
 module.exports = mongoose.model('Post', postsSchema)

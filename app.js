@@ -12,7 +12,7 @@ const app = express()
 // // Routers
 const userRouter = require('./routes/users')
 const postRouter = require('./routes/posts')
-// const postsRouter = require("./routes/posts");
+const commentRouter = require("./routes/comments");
 
 // mongoDB Connect
 connect()
@@ -38,7 +38,7 @@ app.use(
 )
 
 // routers
-app.use('/api', [userRouter, postRouter])
+app.use('/api', [userRouter, postRouter, commentRouter])
 
 // connections test
 app.get('/', (req, res) => {
