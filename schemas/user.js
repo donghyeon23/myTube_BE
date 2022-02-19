@@ -6,26 +6,26 @@ const UserSchema = new mongoose.Schema({
     user_id: { type: String, required: true },
     userName: { type: String, required: true },
     password: { type: String, required: true },
-    posts : {
+    posts: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
     },
-    comments : {
+    comments: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment',
     },
-    likes : {
+    likes: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
     }
 
-  });
+});
 
-  UserSchema.virtual("userId").get(function () {
+UserSchema.virtual("userId").get(function () {
     return this._id.toHexString();
-  });
-  
-  UserSchema.set("toJSON", { virtuals: true });
-  UserSchema.set("toObject", { virtuals: true });
+});
 
-  module.exports = mongoose.model("User", UserSchema);
+UserSchema.set("toJSON", { virtuals: true });
+UserSchema.set("toObject", { virtuals: true });
+
+module.exports = mongoose.model("User", UserSchema);

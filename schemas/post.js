@@ -5,8 +5,8 @@ const User = require("./user")
 const postsSchema = new mongoose.Schema(
   {
     userName: {
-        type: String,
-        required: true, 
+      type: String,
+      required: true,
     },
     title: {
       type: String,
@@ -25,20 +25,20 @@ const postsSchema = new mongoose.Schema(
       required: true,
     },
     views: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     likes: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', 
-  }],
+      ref: 'User',
+    }],
   },
   { timestamps: true }
 );
 
 
 postsSchema.virtual("postId").get(function () {
-    return this._id.toHexString();
+  return this._id.toHexString();
 });
 
 postsSchema.set("toJSON", { virtuals: true, });
@@ -50,7 +50,7 @@ postsSchema.set("toObject", { virtuals: true, });
 //     const { userName, _id } = this.getFilter();
 //     // 관련 댓글 삭제
 //     await User.mupdate({ _id : userName }, {$push: {posts: _id} });
-    
+
 //     next();
 // });
 
