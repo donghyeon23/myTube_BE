@@ -20,6 +20,10 @@ const postsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        imageUrl: {
+            type: String,
+            required: true,
+        },
         category: {
             type: String,
             required: true,
@@ -45,14 +49,5 @@ postsSchema.virtual('postId').get(function () {
 postsSchema.set('toJSON', { virtuals: true })
 postsSchema.set('toObject', { virtuals: true })
 
-// postsSchema.post('save',
-//   async function (next) {
-//     // post id
-//     const { channelName, _id } = this.getFilter();
-//     // 관련 댓글 삭제
-//     await User.mupdate({ _id : channelName }, {$push: {posts: _id} });
-
-//     next();
-// });
 
 module.exports = mongoose.model('Post', postsSchema)

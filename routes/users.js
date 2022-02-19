@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../schemas/user');
+const User = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const authMiddleware = require('../middlewares/auth-middleware');
+const { JWT_SECRET_KEY } = process.env;
 
 //회원가입
 router.post('/user/signup', async (req, res) => {
@@ -52,6 +53,7 @@ router.post('/user/signup', async (req, res) => {
             msg: '회원가입 성공',
         });
     } catch (error) {
+        console.log(error)
         res.status(400).send({
             errorMessage: '입력정보를 다시 확인해주세요.',
         });
