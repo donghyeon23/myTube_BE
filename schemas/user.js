@@ -6,20 +6,10 @@ const UserSchema = new mongoose.Schema({
     user_id: { type: String, required: true },
     channelName: { type: String, required: true },
     password: { type: String, required: true },
-    posts: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-    },
-    comments: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-    },
-    likes: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-    },
+    profile: { type: String, required: true },
 },
-    { timestamps: true }
+    { timestamps: true },
+    { versionKey: false },
 )
 
 UserSchema.virtual('userId').get(function () {

@@ -42,6 +42,11 @@ router.get('/posts/:postId', async (req, res) => {
     try {
         const { postId } = req.params;
         const post = await Post.findById(postId)
+        const postCommentsSelector = { channelName: 1, comment: 1, createdAt: 1, commentId: 1 }
+        const postComments = await Post.findById(postId).populate('comments', postCommentsSelector)
+        const postCount = await Post.findById(postId).populate('commentsCount')
+        console.log(postComments)
+        console.log(postCount)
         post.views++;
         await post.save();
         res.send({ result: 'success', post });
