@@ -4,14 +4,14 @@ const { mongodbUrl } = process.env
 const connect = () => {
     mongoose
         .connect(
-            'mongodb://test1:test1234@54.180.137.157:27017/test01?authSource=admin',
+            mongodbUrl,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 ignoreUndefined: true,
             }
         )
-        .then(() => console.log('MongoDB Connected', new Date()))
+        .then(() => console.log('MongoDB Connected : ', new Date().toLocaleString()))
         .catch((err) => console.log(err))
 }
 

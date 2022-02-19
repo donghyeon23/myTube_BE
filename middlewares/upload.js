@@ -14,25 +14,28 @@ const S3 = new AWS.S3({
 
 
 const fileFilter = (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    if (
-        ext !== ".jpg" &&
-        ext !== ".jpeg" &&
-        ext !== ".png" &&
-        ext !== ".gif" &&
-        ext !== ".mp4"
-    ) return cb({ message: "이미지 파일만 전송가능합니다." }, false);
-    cb(null, true);
+    const ext = path.extname(file.originalname).toLocaleLowerCase();
+    if (file.fieldname === 'videoFile') {
+        if (ext !== ".mp4") cb({ message: "비디오 파일 형식이 맞지 않습니다." }, false);
+        else cb(null, true);
+    } else if (file.fieldname === 'image') {
+        if (
+            ext !== ".jpg" &&
+            ext !== ".png" &&
+            ext !== ".jpeg" &&
+            ext !== ".jfif"
+        ) cb({ message: "이미지 파일 형식이 맞지 않습니다." }, false)
+        else cb(null, true);
+    }
 };
+
 
 const storage = multerS3({
     s3: S3,
     bucket: BUCKET_NAME,
     key(req, file, cb) {
-        cb(
-            null,
-            `original/${Date.now()}${path.basename(file.originalname)}`
-        );
+        if (file.fieldname === 'videoFile') cb(null, `videos/${Date.now()}${path.basename(file.originalname)}`);
+        if (file.fieldname === 'image') cb(null, `images/${Date.now()}${path.basename(file.originalname)}`);
     },
 });
 

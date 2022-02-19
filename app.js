@@ -45,6 +45,10 @@ app.get('/', (req, res) => {
     res.send('hello from mytube')
 })
 
+app.use((err, req, res, next) => {
+    res.status(401).send({ result: "fail", msg: err.message })
+})
+
 app.listen(8080, () => {
     console.log('마이튜브 server is running on port=8080')
 })
