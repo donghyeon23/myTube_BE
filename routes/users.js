@@ -9,7 +9,7 @@ const { JWT_SECRET_KEY } = process.env;
 //회원가입
 router.post('/user/signup', async (req, res) => {
     try {
-        const { user_id, channelName, password } = req.body;
+        const { user_id, channelName, password, profile } = req.body;
         const encryptedPassword = bcrypt.hashSync(password, 10); // password 암호화
         const existsUsers = await User.findOne({ user_id });
         const existsChannelname = await User.findOne({ channelName });
@@ -33,13 +33,13 @@ router.post('/user/signup', async (req, res) => {
         }
         if (existsUsers) {
             //아이디중복
-            return res.status(400).send({
+            return res.status(409).send({
                 errorMessage: 'ID가 이미 사용중입니다.',
             });
         }
         if (existsChannelname) {
             //닉네임(channelName) 중복
-            return res.status(400).send({
+            return res.status(409).send({
                 errorMessage: '채널명이 이미 사용중입니다.',
             });
         }
@@ -47,13 +47,14 @@ router.post('/user/signup', async (req, res) => {
             user_id,
             channelName,
             password: encryptedPassword,
+            profile,
         });
         await user.save();
         res.status(201).send({
             msg: '회원가입 성공',
         });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(400).send({
             errorMessage: '입력정보를 다시 확인해주세요.',
         });
