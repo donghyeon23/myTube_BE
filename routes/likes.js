@@ -16,11 +16,11 @@ router.post('/posts/:postId/like', authMiddleware, async (req, res) => {
 
         const post = await Post.findOne({ postId });
         if (!post) {
-            return res.status(400).send('존재하지 않는 동영상입니다.');
+            return res.status(400).send({ result: 'fail', msg: '존재하지 않는 동영상입니다' });
         }
         const existLike = await Like.findOne({ channelName, postId: post });
         if (existLike) {
-            return res.status(400).send('이미 좋아요 했습니다.');
+            return res.status(400).send({ result: 'fail', msg: '이미 좋아요 했습니다' });
         }
         const createdLike = new Like({
             channelName,
@@ -43,14 +43,13 @@ router.delete('/posts/:postId/like', authMiddleware, async (req, res) => {
 
         const post = await Post.findOne({ postId });
         if (!post) {
-            return res.status(400).send('존재하지 않는 동영상입니다.');
+            return res.status(400).send({ result: 'fail', msg: '존재하지 않는 동영상입니다' });
         }
         const existLike = await Like.findOne({ channelName, postId: post });
         if (!existLike) {
-            return res.status(400).send('이미 취소 했습니다.');
+            return res.status(400).send({ result: 'fail', msg: '이미 취소 했습니다' });
         }
         await Like.deleteOne({ channelName, postId: post });
-        await createdLike.save();
 
         res.send({ result: 'success', msg: '좋아요 취소 완료' });
     } catch (err) {
