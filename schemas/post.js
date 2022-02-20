@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const Comment = require('./comment')
-const User = require('./user')
-const Like = require('./like')
+const mongoose = require('mongoose');
+const Comment = require('./comment');
+const User = require('./user');
+const Like = require('./like');
 
 const postsSchema = new mongoose.Schema(
     {
@@ -33,53 +33,42 @@ const postsSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        // likes: [
-        //     {
-        //         type: mongoose.Schema.Types.ObjectId,
-        //         ref: 'User',
-        //     },
-        // ],
     },
     { timestamps: true },
-    { versionKey: false },
-)
+    { versionKey: false }
+);
 
 postsSchema.virtual('postId').get(function () {
-    return this._id.toHexString()
-})
+    return this._id.toHexString();
+});
 
 postsSchema.virtual('comments', {
     ref: 'Comment',
     localField: '_id',
     foreignField: 'postId',
-})
+});
 
 postsSchema.virtual('commentsCount', {
     ref: 'Comment',
     localField: '_id',
     foreignField: 'postId',
     count: true,
-})
+});
 
 postsSchema.virtual('likes', {
     ref: 'Like',
     localField: '_id',
     foreignField: 'postId',
-    count: true,
-})
+});
 
 postsSchema.virtual('likesCount', {
     ref: 'Like',
     localField: '_id',
     foreignField: 'postId',
     count: true,
-})
+});
 
+postsSchema.set('toJSON', { virtuals: true });
+postsSchema.set('toObject', { virtuals: true });
 
-postsSchema.set('toJSON', { virtuals: true })
-postsSchema.set('toObject', { virtuals: true })
-
-
-
-
-module.exports = mongoose.model('Post', postsSchema)
+module.exports = mongoose.model('Post', postsSchema);
