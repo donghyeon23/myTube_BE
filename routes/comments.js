@@ -12,6 +12,8 @@ const authMiddleware = require('../middlewares/auth-middleware');
 // 댓글 작성
 router.post('/posts/:postId/comments', authMiddleware, async (req, res) => {
     try {
+        console.log(req.body);
+        console.log(req);
         const { channelName } = res.locals.user;
         const { postId } = req.params;
         const { comment } = req.body;
@@ -42,8 +44,7 @@ router.put('/posts/:postId/comments/:commentId', authMiddleware, async (req, res
         const { postId, commentId } = req.params;
         const { comment } = req.body;
 
-        const existComment = await Comment.findOne({ commentId });
-
+        const existComment = await Comment.findOne({ _id: commentId });
         if (channelName !== existComment.channelName) {
             return res
                 .status(401)
@@ -54,7 +55,7 @@ router.put('/posts/:postId/comments/:commentId', authMiddleware, async (req, res
             return res.status(400).send({ result: 'fail', msg: '잘못된 요청입니다.' });
         }
 
-        await Comment.findOneAndUpdate({ commentId }, { comment });
+        await Comment.findOneAndUpdate({ _id: commentId }, { comment });
 
         res.send({ result: 'success', msg: '수정 완료 되었습니다.' });
     } catch (err) {
@@ -69,7 +70,7 @@ router.delete('/posts/:postId/comments/:commentId', authMiddleware, async (req, 
         const { channelName } = res.locals.user;
         const { postId, commentId } = req.params;
 
-        const existComment = await Comment.findOne({ commentId });
+        const existComment = await Comment.findOne({ _id: commentId });
 
         if (channelName !== existComment.channelName) {
             return res
@@ -81,7 +82,7 @@ router.delete('/posts/:postId/comments/:commentId', authMiddleware, async (req, 
             return res.status(400).send({ result: 'fail', msg: '잘못된 요청입니다.' });
         }
 
-        await Comment.deleteOne({ comment_id: commentId });
+        await Comment.deleteOne({ _id: commentId });
 
         res.send({ result: 'success', msg: '삭제 완료 되었습니다.' });
     } catch (err) {
