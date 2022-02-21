@@ -37,14 +37,21 @@ router.get('/posts', async (req, res) => {
 
         // 특정 검색어 조회
         if (search) {
-            const selectedSearch = await Post.find({
+            const searchOption1 = search.replaceAll(' ', '');   // 키워드에 공백 제거
+            console.log(searchOption1)
+            const selectedSearch = await Post.find({        //일반 검색
                 $or: [
                     { channelName: { $regex: search } },
                     { content: { $regex: search } },
                     { title: { $regex: search } },
+                    { channelName: { $regex: searchOption1 } },
+                    { content: { $regex: searchOption1 } },
+                    { title: { $regex: searchOption1 } },
                 ],
-            });
-            return res.send({ result: 'success', posts: selectedSearch });
+            })
+            
+
+            return res.send({ result: 'success', posts: selectedSearch, });
         }
     } catch (error) {
         console.error(error);
