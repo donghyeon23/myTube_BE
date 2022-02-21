@@ -91,13 +91,13 @@ router.post('/user/login', async (req, res, next) => {
         const user = await User.findOne({ user_id });
 
         if (!user) {
-            return res.status(400).send('아이디가 존재하지 않습니다.');
+            return res.status(400).send('아이디 또는 비밀번호가 일치하지 않습니다.');
         }
 
         const passwordCheck = await bcrypt.compare(password, user.password);
 
         if (!passwordCheck) {
-            return res.status(400).send('비밀번호가 일치하지 않습니다.');
+            return res.status(400).send('아이디 또는 비밀번호가 일치하지 않습니다.');
         }
 
         const token = jwt.sign({ user_id: user.user_id }, JWT_SECRET_KEY);

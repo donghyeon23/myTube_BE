@@ -56,10 +56,8 @@ router.get('/posts', async (req, res) => {
 router.get('/posts/:postId', async (req, res) => {
     try {
         const { postId } = req.params;
-        const selector = { channelName: 1, comment: 1, createdAt: 1, commentId: 1, profile: 1 };
-
-        const post = await Post.findById(postId)
-            .populate('comments commentsCount likesCount', selector)
+        const post = await Post.findById(postId).select('channelName title content imageUrl videoUrl category views createdAt')
+            .populate('commentsCount likesCount')
             .populate('likes', { _id: false, channelName: 1 });
 
         post.views++;

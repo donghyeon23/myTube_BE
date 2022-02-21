@@ -9,17 +9,30 @@ const User = require('../schemas/user');
 // MiddleWares
 const authMiddleware = require('../middlewares/auth-middleware');
 
+// 댓글 조회 (특정게시글의 댓글 조회)
+router.get('/posts/:postId/comments', async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const selector = { channelName: 1, comment: 1, profile: 1 };
+        const comments = await Comment.find({ postId }).sort('-createdAt').select(selector);
+        res.send({ result: 'success', comments });
+        
+    } catch (err) {
+        console.log(err);
+        res.status(400).send({ result: 'fail', msg: '잘못된 요청입니다.' });
+    }
+});
+
 // 댓글 작성
 router.post('/posts/:postId/comments', authMiddleware, async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req);
+
         const { channelName } = res.locals.user;
         const { postId } = req.params;
         const { comment } = req.body;
 
         // const userId = await User.findOne({ channelName });
-        const post = await Post.findOne({ postId });
+        const post = await Post.findOne({ _id:postId });
         const user = await User.findOne({ channelName });
 
         const createdComment = new Comment({
