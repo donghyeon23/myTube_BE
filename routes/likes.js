@@ -14,7 +14,7 @@ router.post('/posts/:postId/like', authMiddleware, async (req, res) => {
         const { channelName } = res.locals.user;
         const { postId } = req.params;
 
-        const post = await Post.findOne({ postId });
+        const post = await Post.findOne({ _id: postId });
         if (!post) {
             return res.status(400).send({ result: 'fail', msg: '존재하지 않는 동영상입니다' });
         }
@@ -41,7 +41,7 @@ router.delete('/posts/:postId/like', authMiddleware, async (req, res) => {
         const { channelName } = res.locals.user;
         const { postId } = req.params;
 
-        const post = await Post.findOne({ postId });
+        const post = await Post.findOne({ _id: postId });
         if (!post) {
             return res.status(400).send({ result: 'fail', msg: '존재하지 않는 동영상입니다' });
         }
