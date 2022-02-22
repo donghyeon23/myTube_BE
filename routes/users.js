@@ -86,9 +86,9 @@ router.post('/check', async (req, res, next) => {
 // NOTE: 보안을 위해 인증 메세지는 자세히 설명하지 않는것을 원칙으로 한다: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-responses
 router.post('/user/login', async (req, res, next) => {
     try {
-        const { user_id, password } = req.body;
+        const { userId, password } = req.body;
 
-        const user = await User.findOne({ user_id });
+        const user = await User.findOne({ user_id: userId });
 
         if (!user) {
             return res.status(400).send('아이디 또는 비밀번호가 일치하지 않습니다.');
