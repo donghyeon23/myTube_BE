@@ -9,14 +9,14 @@ const { JWT_SECRET_KEY } = process.env;
 //회원가입
 router.post('/user/signup', async (req, res) => {
     try {
-        const { user_id, channelName, password, profile } = req.body;
+        const { userId, channelName, password, profile } = req.body;
         const encryptedPassword = bcrypt.hashSync(password, 10); // password 암호화
-        const existsUsers = await User.findOne({ user_id });
+        const existsUsers = await User.findOne({ user_id: userId });
         const existsChannelname = await User.findOne({ channelName });
         const checkUserid = /^(?=.*[a-zA-Z])(?=.*[0-9])[0-9a-zA-Z]{4,16}$/; //영문(필수),숫자(필수)로 이루어진 4~16글자 아이디 체크
         const checkchannelName = /^[0-9a-zA-Zㄱ-ㅎ가-힣ㅏ-ㅣ]{2,16}$/; //영문 or 숫자 or 한글로 이루어진 ~16글자 닉네임 체크
         const checkpwd = /^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{4,20}$/; //영문(필수), 숫자(필수), 특수문자(선택) 4~20글자 비밀번호 체크
-        if (!checkUserid.test(user_id)) {
+        if (!checkUserid.test(userId)) {
             return res.status(400).send({
                 errorMessage: '아이디 양식을 확인하세요.',
             });
@@ -44,7 +44,7 @@ router.post('/user/signup', async (req, res) => {
             });
         }
         const user = new User({
-            user_id,
+            user_id: userId,
             channelName,
             password: encryptedPassword,
             profile,
@@ -86,9 +86,9 @@ router.post('/check', async (req, res, next) => {
 // NOTE: 보안을 위해 인증 메세지는 자세히 설명하지 않는것을 원칙으로 한다: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-responses
 router.post('/user/login', async (req, res, next) => {
     try {
-        const { user_id, password } = req.body;
+        const { userId, password } = req.body;
 
-        const user = await User.findOne({ user_id });
+        const user = await User.findOne({ user_id: userId });
 
         if (!user) {
             return res.status(400).send('아이디 또는 비밀번호가 일치하지 않습니다.');
