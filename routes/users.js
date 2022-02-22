@@ -11,7 +11,7 @@ router.post('/user/signup', async (req, res) => {
     try {
         const { userId, channelName, password, profile } = req.body;
         const encryptedPassword = bcrypt.hashSync(password, 10); // password 암호화
-        const existsUsers = await User.findOne({ userId });
+        const existsUsers = await User.findOne({ user_id: userId });
         const existsChannelname = await User.findOne({ channelName });
         const checkUserid = /^(?=.*[a-zA-Z])(?=.*[0-9])[0-9a-zA-Z]{4,16}$/; //영문(필수),숫자(필수)로 이루어진 4~16글자 아이디 체크
         const checkchannelName = /^[0-9a-zA-Zㄱ-ㅎ가-힣ㅏ-ㅣ]{2,16}$/; //영문 or 숫자 or 한글로 이루어진 ~16글자 닉네임 체크
@@ -44,7 +44,7 @@ router.post('/user/signup', async (req, res) => {
             });
         }
         const user = new User({
-            userId,
+            user_id: userId,
             channelName,
             password: encryptedPassword,
             profile,
