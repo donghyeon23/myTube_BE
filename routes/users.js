@@ -114,6 +114,7 @@ router.get('/user/me', authMiddleware, (req, res) => {
     const { user } = res.locals;
     res.send({
         channelName: user.channelName,
+        profile: user.profile,
     });
 });
 

@@ -18,28 +18,31 @@ const deleteS3 = require('../middlewares/deleteS3');
 router.get('/posts', async (req, res) => {
     try {
         const { category, search } = req.query;
+        const selector =
+            'channelName profile title content imageUrl videoUrl category views createdAt';
         console.log(category, search);
         //전체 게시글 조회
         if (
             (!category || category === null || category === undefined) &&
             (!search || search === null || search === undefined)
         ) {
-            const selector = 'channelName title content imageUrl videoUrl category views createdAt';
             const posts = await Post.find().sort('-createdAt').select(selector);
             return res.send({ result: 'success', posts });
         }
 
         // 특정 카테고리 조회
         if (category) {
-            const selectedCategory = await Post.find({ category: category }); //특정 카테고리 게시글 조회
+            const selectedCategory = await Post.find({ category: category })
+                .sort('-createdAt')
+                .select(selector); //특정 카테고리 게시글 조회
             return res.send({ result: 'success', posts: selectedCategory });
         }
 
         // 특정 검색어 조회
         if (search) {
-            const searchOption1 = search.replaceAll(' ', '');   // 키워드에 공백 제거
-            console.log(searchOption1)
-            const selectedSearch = await Post.find({        //일반 검색
+            const searchOption1 = search.replaceAll(' ', ''); // 키워드에 공백 제거
+            console.log(searchOption1);
+            const selectedSearch = await Post.find({
                 $or: [
                     { channelName: { $regex: search } },
                     { content: { $regex: search } },
@@ -49,9 +52,10 @@ router.get('/posts', async (req, res) => {
                     { title: { $regex: searchOption1 } },
                 ],
             })
-            
+                .sort('-createdAt')
+                .select(selector);
 
-            return res.send({ result: 'success', posts: selectedSearch, });
+            return res.send({ result: 'success', posts: selectedSearch });
         }
     } catch (error) {
         console.error(error);
@@ -63,7 +67,8 @@ router.get('/posts', async (req, res) => {
 router.get('/posts/:postId', async (req, res) => {
     try {
         const { postId } = req.params;
-        const post = await Post.findById(postId).select('channelName title content imageUrl videoUrl category views createdAt')
+        const post = await Post.findById(postId)
+            .select('channelName profile title content imageUrl videoUrl category views createdAt')
             .populate('commentsCount likesCount')
             .populate('likes', { _id: false, channelName: 1 });
 
@@ -73,7 +78,7 @@ router.get('/posts/:postId', async (req, res) => {
         res.send({ result: 'success', post });
     } catch (error) {
         console.error(error);
-        res.status(404).send({ result: 'fail', msg: '존재하지 않는 동영상입니다' });
+        res.status(404).send({ result: 'fail', msg: '존재하지 않는 동영상입니다.' });
     }
 });
 
@@ -88,12 +93,13 @@ router.post(
     async (req, res) => {
         try {
             const { channelName } = res.locals.user;
+            const { profile } = res.locals.user;
             const { title, content, category } = req.body;
-            // console.log(req.files.videoFile, req.files.image)
             const videoUrl = req.files.videoFile[0].location;
             const imageUrl = req.files.imageFile[0].location;
             const createdPost = await Post.create({
                 channelName,
+                profile,
                 title,
                 content,
                 category,
@@ -117,7 +123,7 @@ router.delete('/posts/:postId', authMiddleware, async (req, res) => {
         if (existPost) {
             if (existPost.channelName !== channelName) {
                 return res.status(400).send({
-                    errorMessage: '자기 글만 삭제할 수 있습니다.',
+                    errorMessage: '본인이 업로드한 동영상만 삭제할 수 있습니다.',
                 });
             } else {
                 await deleteS3(existPost);

@@ -9,6 +9,10 @@ const postsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        profile: {
+            type: String,
+            required: true,
+        },
         title: {
             type: String,
             required: true,
