@@ -16,7 +16,7 @@ router.post('/user/signup', async (req, res) => {
         const checkUserid = /^(?=.*[a-zA-Z])(?=.*[0-9])[0-9a-zA-Z]{4,16}$/; //영문(필수),숫자(필수)로 이루어진 4~16글자 아이디 체크
         const checkchannelName = /^[0-9a-zA-Zㄱ-ㅎ가-힣ㅏ-ㅣ]{2,16}$/; //영문 or 숫자 or 한글로 이루어진 ~16글자 닉네임 체크
         const checkpwd = /^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{4,20}$/; //영문(필수), 숫자(필수), 특수문자(선택) 4~20글자 비밀번호 체크
-        if (!checkUserid.test(user_id)) {
+        if (!checkUserid.test(userId)) {
             return res.status(400).send({
                 errorMessage: '아이디 양식을 확인하세요.',
             });
