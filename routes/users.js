@@ -9,8 +9,7 @@ const { JWT_SECRET_KEY } = process.env;
 //회원가입
 router.post('/user/signup', async (req, res) => {
     try {
-        const { user_id, channelName, password, profile } = req.body;
-        console.log(req.body);
+        const { userId, channelName, password, profile } = req.body;
         const encryptedPassword = bcrypt.hashSync(password, 10); // password 암호화
         const existsUsers = await User.findOne({ user_id });
         const existsChannelname = await User.findOne({ channelName });
@@ -45,7 +44,7 @@ router.post('/user/signup', async (req, res) => {
             });
         }
         const user = new User({
-            user_id,
+            userId,
             channelName,
             password: encryptedPassword,
             profile,
