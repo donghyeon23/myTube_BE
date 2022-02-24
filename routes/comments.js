@@ -13,7 +13,7 @@ const authMiddleware = require('../middlewares/auth-middleware');
 router.get('/posts/:postId/comments', async (req, res) => {
     try {
         const { postId } = req.params;
-        const selector = { channelName: 1, comment: 1, profile: 1 };
+        const selector = { channelName: 1, comment: 1, profile: 1, createdAt: 1 };
         const comments = await Comment.find({ postId }).sort('-createdAt').select(selector);
         res.send({ result: 'success', comments });
         
