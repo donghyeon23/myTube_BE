@@ -6,6 +6,7 @@ const Post = require('../schemas/post');
 const Comment = require('../schemas/comment');
 const User = require('../schemas/user');
 const Like = require('../schemas/like');
+const Subscribe = require('../schemas/subscribe');
 
 // MiddleWares
 const authMiddleware = require('../middlewares/auth-middleware');
@@ -67,7 +68,12 @@ router.get('/posts', async (req, res) => {
 router.get('/posts/:postId', async (req, res) => {
     try {
         const { postId } = req.params;
-        const post = await Post.findById(postId)
+
+        const user = await Post.findById(postId);
+        const author = await User.findOne({ channelName: user.channelName });
+        const subscribes = await Subscribe.find({ subscribe: author }).select('channelName');
+
+        const post = await Post.findById(postId, { subscribes })
             .select('channelName profile title content imageUrl videoUrl category views createdAt')
             .populate('commentsCount likesCount')
             .populate('likes', { _id: false, channelName: 1 });
