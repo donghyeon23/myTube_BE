@@ -16,7 +16,6 @@ router.get('/posts/:postId/comments', async (req, res) => {
         const selector = { channelName: 1, comment: 1, profile: 1, createdAt: 1 };
         const comments = await Comment.find({ postId }).sort('-createdAt').select(selector);
         res.send({ result: 'success', comments });
-        
     } catch (err) {
         console.log(err);
         res.status(400).send({ result: 'fail', msg: '잘못된 요청입니다.' });
@@ -26,13 +25,12 @@ router.get('/posts/:postId/comments', async (req, res) => {
 // 댓글 작성
 router.post('/posts/:postId/comments', authMiddleware, async (req, res) => {
     try {
-
         const { channelName } = res.locals.user;
         const { postId } = req.params;
         const { comment } = req.body;
 
         // const userId = await User.findOne({ channelName });
-        const post = await Post.findOne({ _id:postId });
+        const post = await Post.findOne({ _id: postId });
         const user = await User.findOne({ channelName });
 
         const createdComment = new Comment({
