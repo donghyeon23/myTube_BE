@@ -14,6 +14,7 @@ const userRouter = require('./routes/users');
 const postRouter = require('./routes/posts');
 const commentRouter = require('./routes/comments');
 const likeRouter = require('./routes/likes');
+const subscribeRouter = require('./routes/subscribes');
 
 // mongoDB Connect
 connect();
@@ -39,7 +40,7 @@ app.use(
 );
 
 // routers
-app.use('/api', [userRouter, postRouter, commentRouter, likeRouter]);
+app.use('/api', [userRouter, postRouter, commentRouter, likeRouter, subscribeRouter]);
 
 // connections test
 app.get('/', (req, res) => {
