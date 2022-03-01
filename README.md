@@ -9,8 +9,8 @@
     - 박효준 : 메인 페이지, 동영상 업로드 페이지, 헤더 검색 기능 </br> ➕ 기술 영상 촬영 </br></br>
     - 이상봉 : 상세 페이지 (동영상 재생 및 댓글, 좋아요, 구독버튼 활성화) </br>➕ 헤더 왼쪽 상단 아이콘 클릭 시 나오는 모달창 작업 </br></br>
   - BE
-    - 서동현 : 전반적인 서버 작업 
-    - 황성원 : 전반적인 서버 작업  </br></br>
+    - 서동현 : 전반적인 서버 작업 함께 함
+    - 황성원 : 전반적인 서버 작업 함께 함 </br></br>
 - 프로젝트 주소:</br>
 <a href="https://www.notion.so/7-befff5fbc81640799404a0c0b05d8d40"> 💻 S.A. 주소_Mytube (=Youtube) (클릭)</a></br>
 <a href="https://www.figma.com/file/6zuIPjlIhHjcr42B7SYcYq/Untitled?node-id=0%3A1"> 💻 와이어프레임 피그마 주소_Mytube (=Youtube) (클릭)</a></br>
@@ -24,12 +24,12 @@
   
 #### 📽 회원가입
 
-![image](https://user-images.githubusercontent.com/87584033/156204606-fc890ffd-5e80-409e-b199-e9715af3647a.png)
+![회원가입](https://user-images.githubusercontent.com/77830226/156198214-4f8f222a-6b9e-4771-8dc1-b80f3ad2db65.gif)
 
 </br>
 
 #### 📽 로그인
-![image](https://user-images.githubusercontent.com/87584033/156204824-1f74a6db-ec18-4ce1-9fb6-77c465763704.png)
+![로그인](https://user-images.githubusercontent.com/77830226/156198230-c75d748d-9c26-41fa-9342-3beb0ccbcc5a.gif)
 
 </br>
 
